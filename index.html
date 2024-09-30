@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameFlux</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #0b0b0b;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        body * {
+            transition: all 0.3s ease;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #080808;
+            height: 80px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 80px; /* Larger logo size */
+            margin-right: 10px;
+            transition: transform 0.3s ease; /* Smooth transform effect */
+        }
+
+        .logo:hover {
+            cursor: pointer;
+        }
+
+        .logo:active {
+            transform: scale(1.2); /* Enlarges when clicked */
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 25px; /* Moved buttons farther from the separator */
+        }
+
+        .separator {
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            margin-left: 25px;
+            margin-right: 25px;
+            height: 25px;
+        }
+        
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 800; /* Extra Bold font */
+            font-size: 22px; /* Larger font size */
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav a.active,
+        nav a:hover {
+            color: #00ff3d;
+        }
+
+        nav a:hover {
+            cursor: pointer;
+        }
+
+        /* Right-click to open new tab functionality */
+        nav a {
+            pointer-events: all;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #0c0c0c;
+            padding: 10px 20px;
+            border-radius: 15px; /* Curvier edges */
+            border: 2px solid transparent;
+            transition: border-color 0.4s ease;
+            position: relative;
+        }
+
+        .search-bar input {
+            background-color: #0c0c0c;
+            border: none;
+            color: white;
+            padding: 10px;
+            width: 200px;
+            font-size: 18px; /* Larger text size */
+            transition: width 0.4s ease;
+        }
+
+        .search-bar input:focus {
+            width: 300px;
+            outline: none;
+            border: none;
+        }
+
+        .search-bar:hover {
+            border-color: #00ff3d;
+        }
+
+        .search-bar:focus-within {
+            border-color: #00ff3d;
+        }
+
+        .search-bar button {
+            background-color: transparent;
+            border: none;
+        }
+
+        .search-bar button img {
+            height: 20px;
+        }
+
+        .hero-section {
+            padding: 40px;
+            text-align: center;
+            height: 40vh;
+            position: relative;
+        }
+
+        .hero-section img {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .all-games-button {
+            padding: 20px 40px;
+            background-color: #00ff3d;
+            border: none;
+            color: #080808;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .all-games-button:hover {
+            transform: scale(1.1);
+        }
+
+        .popular-section {
+            padding: 40px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .popular-section h2 {
+            color: #00ff3d;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .game-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            margin-top: 60px; /* Moves game cards lower */
+        }
+
+        .game {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 15px;
+            width: 23%;
+            position: relative;
+            transition: transform 0.3s, border-color 0.4s ease;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .game img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            border-radius: 10px;
+        }
+
+        .game-info {
+            margin-top: 10px;
+        }
+
+        .game-info h3 {
+            color: #00ff3d;
+            font-size: 16px;
+        }
+
+        .game-info p {
+            color: #666;
+        }
+
+        .game:hover {
+            transform: scale(1.05);
+            border-color: #00ff3d; /* Fade-in effect for border */
+        }
+
+        .new-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #00ff3d;
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #080808;
+            margin-top: auto;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <video class="video-bg" autoplay loop muted>
+        <source src="assets/videos/gameflux-homepage-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <header>
+        <div class="logo-section">
+            <img src="assets/logos/transparent-logo.png" alt="GameFlux Logo" class="logo">
+            <div class="separator"></div>
+            <nav>
+                <a href="/" class="active">Home</a>
+                <a href="/ga">Games</a>
+                <a href="/ac">Action</a>
+                <a href="/ad">Adventure</a>
+                <a href="/sp">Sports</a>
+                <a href="/ra">Racing</a>
+                <a href="/st">Strategy</a>
+                <a href="/sh">Shooter</a>
+                <a href="/pu">Puzzle</a>
+            </nav>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button><img src="assets/icons/search-icon.png" alt="Search"></button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <img src="assets/logos/transparent-logo.png" alt="GameFlux Transparent Logo">
+            <button class="all-games-button" onclick="window.location.href='/g'">Games</button>
+        </section>
+
+        <section class="popular-section">
+            <h2>Popular</h2>
+            <div class="game-grid">
+                <div class="game" onclick="window.location.href='/mcft'">
+                    <img src="assets/g/horizontal-minecraft.jpg" alt="Minecraft">
+                    <div class="game-info">
+                        <span class="new-badge">NEW</span>
+                        <h3>Minecraft</h3>
+                        <p>Play Minecraft on GameFlux.lol</p>
+                    </div>
+                </div>
+                <div class="game" onclick="window.location.href='/slpe'">
+                    <img src="assets/g/horizontal-slope.jpg" alt="Slope">
+                    <div class="game-info">
+                        <h3>Slope</h3>
+                        <p>Play Slope on GameFlux.lol</p>
+                    </div>
+                </div>
+                <div class="game" onclick="window.location.href='/mx3m'">
+                    <img src="assets/g/horizontal-mx3m.jpg" alt="Moto X3M">
+                    <div class="game-info">
+                        <h3>Moto X3M</h3>
+                        <p>Play Moto X3M on GameFlux.lol</p>
+                    </div>
+                </div>
+                <div class="game" onclick="window.location.href='/1lol'">
+                    <img src="assets/g/horizontal-1lol.jpg" alt="1v1.lol">
+                    <div class="game-info">
+                        <h3>1v1.lol</h3>
+                        <p>Play 1v1.lol on GameFlux.lol</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2024 GameFlux. All Rights Reserved.
+    </footer>
+</body>
+
+</html>
